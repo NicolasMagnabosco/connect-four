@@ -1,0 +1,12 @@
+.play {
+  background-color: var(--yellow);
+}
+.play:active {
+  background-color: var(--yellow-act);
+}
+.rules {
+  background-color: var(--white);
+}
+.rules:active {
+  background-color: var(--white-act);
+}

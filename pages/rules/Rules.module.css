@@ -1,0 +1,30 @@
+.heading {
+  color: var(--white);
+}
+.rules {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--purple-dark);
+  padding-bottom: 2em;
+}
+.container {
+  margin: 0.5em 0;
+  width: 60%;
+  background-color: var(--white);
+  border-radius: 20px;
+}
+.link {
+  background-color: var(--red);
+  color: var(--white);
+}
+.link:active {
+  background-color: var(--red-act);
+}
+@media (max-width: 530px) {
+  .container {
+    width: 85%;
+  }
+}

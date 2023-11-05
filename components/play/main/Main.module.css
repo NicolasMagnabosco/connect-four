@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 3em;
+}
+
+@media (max-width: 950px) {
+  .main {
+    margin-top: 4em;
+  }
+  .board-container {
+    position: absolute;
+    top: 120%;
+    left: -21%;
+  }
+}
+
+@media (max-width: 530px) {
+  .board-container {
+    left: -3%;
+  }
+}
+@media (max-width: 395px) {
+  .board-container {
+    left: 1%;
+  }
+}

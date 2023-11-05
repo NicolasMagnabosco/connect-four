@@ -1,0 +1,21 @@
+.container {
+  padding: 2em 0.5em;
+  border-radius: 100%;
+  background-color: var(--purple-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  border: solid 2px var(--white);
+}
+.ball {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+.ball:first-child {
+  background-color: var(--red);
+}
+.ball:last-child {
+  background-color: var(--yellow);
+}

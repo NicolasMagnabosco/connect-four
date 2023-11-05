@@ -1,0 +1,64 @@
+.container {
+  animation: ease 1s popUp;
+  position: absolute;
+  top: 88%;
+  left: 40%;
+  padding: 1em 2.5em;
+  border-radius: 10px;
+  border: solid 3px var(--black);
+  text-align: center;
+}
+.container--red {
+  background-color: var(--red);
+  color: var(--white);
+}
+.container--yellow {
+  background-color: var(--yellow);
+}
+.continue {
+  cursor: pointer;
+  font-family: var(--ff);
+  background-color: var(--purple-dark);
+  color: var(--white);
+  padding: 0.4em;
+}
+.message {
+  margin-bottom: 0.3em;
+}
+.message span {
+  font-size: 1.3rem;
+  display: block;
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (max-width: 950px) {
+  .container {
+    left: 32%;
+  }
+}
+
+@media (max-width: 530px) {
+  .container {
+    left: 25%;
+    width: 55%;
+  }
+}
+@media (max-width: 395px) {
+  .container {
+    left: 21%;
+    width: 58%;
+  }
+}

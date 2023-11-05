@@ -1,0 +1,27 @@
+.home {
+  min-height: 100vh;
+  background-image: var(--bgr-img);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 2em;
+}
+.heading {
+  font-weight: var(--fw);
+  font-family: ff;
+  color: white;
+  text-shadow: var(--text-shadow);
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+.options {
+  display: grid;
+  grid-template-columns: repeat(1fr, 2);
+  gap: 2em;
+}

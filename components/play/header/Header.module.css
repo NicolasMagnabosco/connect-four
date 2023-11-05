@@ -1,0 +1,26 @@
+.header {
+  z-index: 10;
+  display: flex;
+  gap: 2em;
+}
+.btn {
+  background-color: var(--red);
+  color: var(--white);
+  text-decoration: none;
+  font-family: var(--ff);
+  font-size: 1rem;
+  border: none;
+  padding: 0.25em 0.5em;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.btn:active {
+  background-color: var(--red-act);
+}
+.btn:last-child {
+  background-color: var(--yellow);
+  color: var(--black);
+}
+.btn:last-child:active {
+  background-color: var(--yellow-act);
+}

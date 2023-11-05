@@ -1,0 +1,28 @@
+.container {
+  border: solid 3px var(--black);
+  box-shadow: var(--bs);
+  text-align: center;
+  border-radius: 10px;
+  padding: 2em;
+  position: relative;
+  background-color: var(--white);
+}
+.ball {
+  top: -25%;
+  left: 33%;
+  border: solid 2px var(--black);
+  box-shadow: var(--bs);
+  position: absolute;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+}
+.ball--red {
+  background-color: var(--red);
+}
+.ball--yellow {
+  background-color: var(--yellow);
+}
+.score {
+  font-size: 2.5rem;
+}

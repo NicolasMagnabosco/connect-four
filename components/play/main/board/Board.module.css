@@ -1,0 +1,15 @@
+.board {
+  background-color: var(--white);
+  padding: 1em;
+  border-radius: 20px;
+  border: solid 2px var(--black);
+  box-shadow: var(--bs);
+  padding-bottom: 3em;
+}
+
+@media (max-width: 395px) {
+  .board {
+    padding: 0em;
+    padding-bottom: 2em;
+  }
+}

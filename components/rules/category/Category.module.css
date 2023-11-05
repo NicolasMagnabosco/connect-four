@@ -1,0 +1,11 @@
+.category {
+  margin: 2em;
+}
+.heading {
+  margin-bottom: 0.3em;
+  font-size: 1.3rem;
+  color: var(--red);
+}
+.explanation {
+  word-spacing: 0.25em;
+}
