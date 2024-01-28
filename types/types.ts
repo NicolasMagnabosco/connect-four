@@ -5,6 +5,7 @@ export interface BoxInfo {
   y: number;
   color: BoxColor;
 }
+export type Board = Array<Array<BoxColor>>;
 
 import {
   DIAG_LEFT_WIN,

@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
 import {
+  checkColumn,
+  checkDiagLeft,
+  checkDiagRight,
+  checkRow,
+} from "@/utils/validationUtils";
+
+import {
   BoxColor,
   BoxInfo,
   Win,
   WinType,
   WinnerBox,
   Turn,
+  Board,
 } from "../types/types";
 import {
   COLUMN_WIN,
@@ -13,13 +21,14 @@ import {
   DIAG_RIGHT_WIN,
   X_LENGTH,
   Y_LENGTH,
-  MINIMUM_ROW,
   ROW_WIN,
 } from "@/constants/constants";
 import useTimer from "./useTimer";
 
 export default function useConnectFour() {
-  const [board, setBoard] = useState<Array<Array<BoxColor>>>(
+  //due to a mistake, the order of the board array is [Y,X], but the axis of each one remains normal
+  // X= horizontal, Y= vertical, but the way to access a box is flipped from the traditional [X,Y]
+  const [board, setBoard] = useState<Board>(
     Array.from({ length: Y_LENGTH }, () =>
       Array.from({ length: X_LENGTH }, () => null)
     )
@@ -32,123 +41,27 @@ export default function useConnectFour() {
     winnerColor: "",
     winnerBoxes: [],
   });
+
+  //box updated in last turn
   const [updatedBox, setUpdatedBox] = useState<BoxInfo | null>(null);
 
   const { remainingTime, isTimeOver, resetTimer } = useTimer();
-
-  const checkColumn = (): Array<WinnerBox> | null => {
-    const { x, y, color } = updatedBox as BoxInfo;
-    let winnerBoxes = [];
-    //if false, there aren't enough filled boxes to check(at least 4)
-    if (board[MINIMUM_ROW][x]) {
-      for (let i = y; i < y + 4; i++) {
-        if (i >= 0 && i < Y_LENGTH) {
-          if (board[i][x] === color) winnerBoxes.push({ x: x, y: i });
-          else winnerBoxes = [];
-        }
-      }
-      if (winnerBoxes.length < 4) return null;
-      else return winnerBoxes;
-    } else return null;
-  };
-
-  const checkRow = (): Array<WinnerBox> | null => {
-    const { y, color } = updatedBox as BoxInfo;
-    let winnerBoxes = [];
-    let x = 0;
-    while (x < X_LENGTH && winnerBoxes.length < 4) {
-      if (board[y][x] === color) winnerBoxes.push({ x: x, y: y });
-      else winnerBoxes = [];
-      x++;
-    }
-    if (winnerBoxes.length < 4) return null;
-    else return winnerBoxes;
-  };
-
-  const checkDiagRight = (): Array<WinnerBox> | null => {
-    const { x, y, color } = updatedBox as BoxInfo;
-    let currentX = x;
-    let currentY = y;
-    let winnerBoxes = [];
-    while (currentX >= 0 && currentY < Y_LENGTH && winnerBoxes.length < 4) {
-      if (board[currentY][currentX] === color)
-        winnerBoxes.push({ x: currentX, y: currentY });
-      else winnerBoxes = [];
-      currentX--;
-      currentY++;
-    }
-    if (winnerBoxes.length < 4) {
-      currentX = x;
-      currentY = y;
-      winnerBoxes = [];
-      while (currentY >= 0 && currentX < X_LENGTH && winnerBoxes.length < 4) {
-        if (board[currentY][currentX] === color)
-          winnerBoxes.push({ x: currentX, y: currentY });
-        else winnerBoxes = [];
-        currentX++;
-        currentY--;
-      }
-      if (winnerBoxes.length < 4) return null;
-      else return winnerBoxes;
-    } else return winnerBoxes;
-  };
-
-  const checkDiagLeft = (): Array<WinnerBox> | null => {
-    const { x, y, color } = updatedBox as BoxInfo;
-    let currentX = x;
-    let currentY = y;
-    let winnerBoxes = [];
-    while (currentX >= 0 && currentY >= 0 && winnerBoxes.length < 4) {
-      if (board[currentY][currentX] === color)
-        winnerBoxes.push({ x: currentX, y: currentY });
-      else winnerBoxes = [];
-      currentX--;
-      currentY--;
-    }
-    if (winnerBoxes.length < 4) {
-      currentX = x;
-      currentY = y;
-      winnerBoxes = [];
-      while (
-        currentY < Y_LENGTH &&
-        currentX < X_LENGTH &&
-        winnerBoxes.length < 4
-      ) {
-        if (board[currentY][currentX] === color)
-          winnerBoxes.push({ x: currentX, y: currentY });
-        else winnerBoxes = [];
-        currentX++;
-        currentY++;
-      }
-      if (winnerBoxes.length < 4) return null;
-      else return winnerBoxes;
-    } else return winnerBoxes;
-  };
-
-  useEffect(() => {
-    if (updatedBox)
-      setBoard((b) => {
-        let newBoard = JSON.parse(JSON.stringify(board));
-        newBoard[updatedBox.y][updatedBox.x] = updatedBox.color;
-        return newBoard;
-      });
-  }, [updatedBox]);
 
   useEffect(() => {
     const validateWin = () => {
       if (updatedBox) {
         let winType: WinType | null = null;
         let winnerBoxes: Array<WinnerBox> | null = null;
-        winnerBoxes = checkColumn();
+        winnerBoxes = checkColumn(updatedBox, board);
         if (winnerBoxes) winType = COLUMN_WIN;
         else {
-          winnerBoxes = checkRow();
+          winnerBoxes = checkRow(updatedBox, board);
           if (winnerBoxes) winType = ROW_WIN;
           else {
-            winnerBoxes = checkDiagRight();
+            winnerBoxes = checkDiagRight(updatedBox, board);
             if (winnerBoxes) winType = DIAG_RIGHT_WIN;
             else {
-              winnerBoxes = checkDiagLeft();
+              winnerBoxes = checkDiagLeft(updatedBox, board);
               if (winnerBoxes) winType = DIAG_LEFT_WIN;
             }
           }
@@ -162,7 +75,6 @@ export default function useConnectFour() {
           });
       }
     };
-
     //if a there is an updated box, i validate and change turn, otherwise, the board was reset
     if (updatedBox) {
       validateWin();
@@ -184,14 +96,20 @@ export default function useConnectFour() {
     }
   }, [isTimeOver]);
 
+  //checks whether there is a blank box in current Y axis to be filled and updates the board
   const updateBox = (x: number) => {
-    let y = Y_LENGTH - 1;
+    let y = Y_LENGTH - 1; // get the Y axis bottom index (0..[5])
     while (y >= 0 && board[y][x]) {
-      y--;
+      y--; //if the box is painted, then checks the one above
     }
     if (y >= 0) {
       const newColor = turn;
       setUpdatedBox({ x: x, y: y, color: newColor });
+      setBoard((b) => {
+        let newBoard = JSON.parse(JSON.stringify(b));
+        newBoard[y][x] = newColor;
+        return newBoard;
+      });
     }
   };
 

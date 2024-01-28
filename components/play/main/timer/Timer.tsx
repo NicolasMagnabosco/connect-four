@@ -4,7 +4,7 @@ import { useContext } from "react";
 import styles from "./Timer.module.css";
 
 export default function Timer() {
-  const { remainingTime, resetTimer, turn } = useContext(
+  const { remainingTime, turn } = useContext(
     ConnectFourCtx
   ) as ConnectFourCtxInt;
   return (
