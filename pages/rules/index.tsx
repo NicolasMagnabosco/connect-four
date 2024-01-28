@@ -13,7 +13,11 @@ export default function Rules() {
       <div className={styles.container}>
         {RULES.map((rule) => {
           return (
-            <Category heading={rule.heading} explanation={rule.explanation} />
+            <Category
+              key={crypto.randomUUID()}
+              heading={rule.heading}
+              explanation={rule.explanation}
+            />
           );
         })}
       </div>
