@@ -4,7 +4,7 @@ import {
   checkDiagLeft,
   checkDiagRight,
   checkRow,
-} from "@/utils/validationUtils";
+} from "@/helpers/validationHelpers";
 
 import {
   BoxColor,
